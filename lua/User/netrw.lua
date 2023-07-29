@@ -9,4 +9,4 @@ vim.api.nvim_set_keymap('n', '<leader>tt', ':Lex<CR>', { silent = true }) --Togg
 
 
 -- Tree size
-vim.g.netrw_winsize = 30
+vim.g.netrw_winsize = 27
