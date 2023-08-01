@@ -13,6 +13,12 @@ local workspace_dir = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 local client_capabilities = vim.lsp.protocol.make_client_capabilities()
 local capabilities = cmp_nvim_lsp.default_capabilities(client_capabilities)
 
+-- for debugging
+local java_debugger_path = "D:/Java/java-debug-0.47.0"
+local bundles = {
+    vim.fn.glob(java_debugger_path .. "/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar")
+}
+
 local function get_config_dir()
     -- Unlike some other programming languages (e.g. JavaScript)
     -- lua considers 0 truthy!
@@ -62,7 +68,8 @@ local config = {
     })[1]),
     init_options = {
         -- https://github.com/eclipse/eclipse.jdt.ls/wiki/Language-Server-Settings-&-Capabilities#extended-client-capabilities
-        extendedClientCapabilities = jdtls.extendedClientCapabilities
+        extendedClientCapabilities = jdtls.extendedClientCapabilities,
+        bundles = bundles
     },
     on_attach = function(client, bufnr)
         -- https://github.com/mfussenegger/dotfiles/blob/833d634251ebf3bf7e9899ed06ac710735d392da/vim/.config/nvim/ftplugin/java.lua#L88-L94
@@ -74,6 +81,11 @@ local config = {
             desc = 'Organize imports',
             buffer = bufnr
         })
+
+        -- With `hotcodereplace = 'auto' the debug adapter will try to apply code changes
+        -- you make during a debug session immediately.
+        -- Remove the option if you do not want that.
+        require('jdtls').setup_dap({ hotcodereplace = 'auto' })
 
         -- Should 'd' be reserved for debug?
         vim.keymap.set('n', "<leader>df", jdtls.test_class, opts)
