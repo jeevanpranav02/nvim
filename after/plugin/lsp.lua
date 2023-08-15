@@ -66,6 +66,7 @@ lsp.on_attach(function(client, bufnr)
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, bufopts, "List workspace folders")
     nnoremap('<leader>D', vim.lsp.buf.type_definition, bufopts, "Go to type definition")
+    nnoremap('<leader>rr', vim.lsp.buf.references, bufopts, "Show all references")
     nnoremap('<leader>rn', vim.lsp.buf.rename, bufopts, "Rename")
     nnoremap('<leader>ca', vim.lsp.buf.code_action, bufopts, "Code actions")
     vim.keymap.set('v', "<leader>ca", "<ESC><CMD>lua vim.lsp.buf.range_code_action()<CR>", {
